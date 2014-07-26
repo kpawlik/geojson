@@ -63,7 +63,7 @@ type Geometry interface {
 type Point struct {
 	Type        string     `json:"type"`
 	Coordinates Coordinate `json:"coordinates"`
-	Crs         *CRS       `json:"crs,omitempty" bson:"crs,omitempty"`
+	Crs         *CRS       `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 // Add geometry to coordinates.
@@ -99,7 +99,7 @@ func NewPoint(c Coordinate) *Point {
 type MultiPoint struct {
 	Type        string      `json:"type"`
 	Coordinates Coordinates `json:"coordinates"`
-	Crs         *CRS        `json:"crs,omitempty" bson:"crs,omitempty"`
+	Crs         *CRS        `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 // Add geometry to MultiPoint, if paremeter will be append to coordinates
@@ -146,7 +146,7 @@ func NewMultiPoint(coordinates Coordinates) *MultiPoint {
 type LineString struct {
 	Type        string      `json:"type"`
 	Coordinates Coordinates `json:"coordinates"`
-	Crs         *CRS        `json:"crs,omitempty" bson:"crs,omitempty"`
+	Crs         *CRS        `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 // Add new position to LineString
@@ -197,7 +197,7 @@ func NewLineString(coordinates Coordinates) *LineString {
 type MultiLineString struct {
 	Type        string    `json:"type"`
 	Coordinates MultiLine `json:"coordinates"`
-	Crs         *CRS      `json:"crs,omitempty" bson:"crs,omitempty"`
+	Crs         *CRS      `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 // Add new line or line to MultiLineString
@@ -250,7 +250,7 @@ func NewMultiLineString(coordinates MultiLine) *MultiLineString {
 type Polygon struct {
 	Type        string    `json:"type"`
 	Coordinates MultiLine `json:"coordinates,float"`
-	Crs         *CRS      `json:"crs,omitempty" bson:"crs,omitempty"`
+	Crs         *CRS      `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 // Add new polygon  or hole to Polygon
@@ -303,7 +303,7 @@ func NewPolygon(coordinates MultiLine) *Polygon {
 type MultiPolygon struct {
 	Type        string      `json:"type"`
 	Coordinates []MultiLine `json:"coordinates"`
-	Crs         *CRS        `json:"crs,omitempty" bson:"crs,omitempty"`
+	Crs         *CRS        `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 // add new polygon or hole.
@@ -362,7 +362,7 @@ func NewMultiPolygon(coordinates []MultiLine) *MultiPolygon {
 type GeometryCollection struct {
 	Type       string        `json:"type"`
 	Geometries []interface{} `json:"geometries"`
-	Crs        *CRS          `json:"crs,omitempty" bson:"crs,omitempty"`
+	Crs        *CRS          `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 // new values are append

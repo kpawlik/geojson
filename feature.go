@@ -18,11 +18,11 @@ type BoundingBox []float64
 //   included as a member of the feature object with the name "id".
 type Feature struct {
 	Type       string                 `json:"type"`
-	Id         interface{}            `json:"id,omitempty" bson:"id,omitempty"`
+	Id         interface{}            `json:"id,omitempty" "$id,omitempty"`
 	Geometry   interface{}            `json:"geometry"`
 	Properties map[string]interface{} `json:"properties"`
-	Bbox       BoundingBox            `json:"bbox,omitempty" bson:"bbox,omitempty"`
-	Crs        *CRS                   `json:"crs,omitempty" bson:"crs,omitempty"`
+	Bbox       BoundingBox            `json:"bbox,omitempty" "$bbox,omitempty"`
+	Crs        *CRS                   `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 func (t *Feature) GetGeometry() (Geometry, error) {
@@ -45,8 +45,8 @@ func NewFeature(geom Geometry, properties map[string]interface{},
 type FeatureCollection struct {
 	Type     string      `json:"type"`
 	Features []*Feature  `json:"features"`
-	Bbox     BoundingBox `json:"bbox,omitempty"`
-	Crs      *CRS        `json:"crs,omitempty"`
+	Bbox     BoundingBox `json:"bbox,omitempty" "$bbox,omitempty"`
+	Crs      *CRS        `json:"crs,omitempty" "$crs,omitempty"`
 }
 
 func (t *FeatureCollection) AddFeatures(f ...*Feature) {
