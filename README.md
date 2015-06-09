@@ -1,17 +1,20 @@
-GEOJSON
-============
+#GEOJSON
+***
 
 Go package to easy and quick create datastructure which can be serialized to geojson format
 
-INSTALATION
----------------------
+***
 
->`go get https://github.com/kpawlik/geojson`
->`go install https://github.com/kpawlik/geojson`
+## INSTALATION
 
-USAGE EXAMPLE
----------------------
 
+`go get https://github.com/kpawlik/geojson`
+
+`go install https://github.com/kpawlik/geojson`
+
+***
+
+## USAGE EXAMPLE
 
     package main
 
