@@ -17,12 +17,12 @@ type BoundingBox []float64
 // - If a feature has a commonly used identifier, that identifier should be 
 //   included as a member of the feature object with the name "id".
 type Feature struct {
-	Type       string                 `json:"type"`
-	Id         interface{}            `json:"id,omitempty"`
-	Geometry   interface{}            `json:"geometry"`
-	Properties map[string]interface{} `json:"properties"`
-	Bbox       BoundingBox            `json:"bbox,omitempty"`
-	Crs        *CRS                   `json:"crs,omitempty"`
+	Type       string                 `json:"type" bson:"type"`
+	Id         interface{}            `json:"id,omitempty" bson:"id,omitempty"`
+	Geometry   interface{}            `json:"geometry" bson:"geometry"`
+	Properties map[string]interface{} `json:"properties" bson:"properties"`
+	Bbox       BoundingBox            `json:"bbox,omitempty" bson:"bbox,omitempty"`
+	Crs        *CRS                   `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 func (t *Feature) GetGeometry() (Geometry, error) {
@@ -43,10 +43,10 @@ func NewFeature(geom Geometry, properties map[string]interface{},
 // "features". The value corresponding to "features" is an array. 
 // Each element in the array is a Feature object.
 type FeatureCollection struct {
-	Type     string      `json:"type"`
-	Features []*Feature  `json:"features"`
-	Bbox     BoundingBox `json:"bbox,omitempty"`
-	Crs      *CRS        `json:"crs,omitempty"`
+	Type     string      `json:"type" bson:"type"`
+	Features []*Feature  `json:"features" bson:"features"`
+	Bbox     BoundingBox `json:"bbox,omitempty" bson:"bbox,omitempty"`
+	Crs      *CRS        `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 func (t *FeatureCollection) AddFeatures(f ...*Feature) {
@@ -64,8 +64,8 @@ func NewFeatureCollection(features []*Feature) *FeatureCollection {
 // The coordinate reference system (CRS) of a GeoJSON object 
 // is determined by its "crs" member. 
 type CRS struct {
-	Type       string            `json:"type"`
-	Properties map[string]string `json:"properties"`
+	Type       string            `json:"type" bson:"type"`
+	Properties map[string]string `json:"properties" bson:"properties"`
 }
 
 //Example:
