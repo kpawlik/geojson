@@ -61,9 +61,9 @@ type Geometry interface {
 //Out example: 
 //   { "type": "Point", "coordinates": [100.0, 0.0] }
 type Point struct {
-	Type        string     `json:"type"`
-	Coordinates Coordinate `json:"coordinates"`
-	Crs         *CRS       `json:"crs,omitempty"`
+	Type        string     `json:"type" bson:"type"`
+	Coordinates Coordinate `json:"coordinates" bson:"coordinates"`
+	Crs         *CRS       `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 // Add geometry to coordinates. 
@@ -97,9 +97,9 @@ func NewPoint(c Coordinate) *Point {
 //		"coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
 // 	  }
 type MultiPoint struct {
-	Type        string      `json:"type"`
-	Coordinates Coordinates `json:"coordinates"`
-	Crs         *CRS        `json:"crs,omitempty"`
+	Type        string      `json:"type" bson:"type"`
+	Coordinates Coordinates `json:"coordinates" bson:"coordinates"`
+	Crs         *CRS        `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 // Add geometry to MultiPoint, if paremeter will be append to coordinates
@@ -144,9 +144,9 @@ func NewMultiPoint(coordinates Coordinates) *MultiPoint {
 //      "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
 //    }
 type LineString struct {
-	Type        string      `json:"type"`
-	Coordinates Coordinates `json:"coordinates"`
-	Crs         *CRS        `json:"crs,omitempty"`
+	Type        string      `json:"type" bson:"type"`
+	Coordinates Coordinates `json:"coordinates" bson:"coordinates"`
+	Crs         *CRS        `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 // Add new position to LineString
@@ -195,9 +195,9 @@ func NewLineString(coordinates Coordinates) *LineString {
 //	    ]
 //	  }
 type MultiLineString struct {
-	Type        string    `json:"type"`
-	Coordinates MultiLine `json:"coordinates"`
-	Crs         *CRS      `json:"crs,omitempty"`
+	Type        string    `json:"type" bson:"type"`
+	Coordinates MultiLine `json:"coordinates" bson:"coordinates"`
+	Crs         *CRS      `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 // Add new line or line to MultiLineString
@@ -248,9 +248,9 @@ func NewMultiLineString(coordinates MultiLine) *MultiLineString {
 //    ]
 // }
 type Polygon struct {
-	Type        string    `json:"type"`
-	Coordinates MultiLine `json:"coordinates,float"`
-	Crs         *CRS      `json:"crs,omitempty"`
+	Type        string    `json:"type" bson:"type"`
+	Coordinates MultiLine `json:"coordinates,float" bson:"coordinates,float"`
+	Crs         *CRS      `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 // Add new polygon  or hole to Polygon
@@ -301,9 +301,9 @@ func NewPolygon(coordinates MultiLine) *Polygon {
 //    ]
 //  }
 type MultiPolygon struct {
-	Type        string      `json:"type"`
-	Coordinates []MultiLine `json:"coordinates"`
-	Crs         *CRS        `json:"crs,omitempty"`
+	Type        string      `json:"type" bson:"type"`
+	Coordinates []MultiLine `json:"coordinates" bson:"coordinates"`
+	Crs         *CRS        `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 // add new polygon or hole.
@@ -360,9 +360,9 @@ func NewMultiPolygon(coordinates []MultiLine) *MultiPolygon {
 //  ]
 //}
 type GeometryCollection struct {
-	Type       string        `json:"type"`
-	Geometries []interface{} `json:"geometries"`
-	Crs        *CRS          `json:"crs,omitempty"`
+	Type       string        `json:"type" bson:"type"`
+	Geometries []interface{} `json:"geometries" bson:"geometries"`
+	Crs        *CRS          `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
 // new values are append
