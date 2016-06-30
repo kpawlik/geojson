@@ -55,10 +55,10 @@ type Geometry interface {
 	//GetGeometry() interface{}
 }
 
-//Point coordinates are in x, y order 
-//(easting, northing for projected coordinates, 
+//Point coordinates are in x, y order
+//(easting, northing for projected coordinates,
 //longitude, latitude for geographic coordinates)
-//Out example: 
+//Out example:
 //   { "type": "Point", "coordinates": [100.0, 0.0] }
 type Point struct {
 	Type        string     `json:"type" bson:"type"`
@@ -66,7 +66,7 @@ type Point struct {
 	Crs         *CRS       `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
-// Add geometry to coordinates. 
+// Add geometry to coordinates.
 // New value will replace existing
 func (t *Point) AddGeometry(g interface{}) error {
 	if c, ok := g.(Coordinate); ok {
@@ -130,7 +130,7 @@ func (t MultiPoint) GetGeometry() interface{} {
 	return t.Coordinates
 }
 
-//Factory function to create new object 
+//Factory function to create new object
 func NewMultiPoint(coordinates Coordinates) *MultiPoint {
 	if coordinates == nil {
 		coordinates = make(Coordinates, 0, INIT_GEOM_CAP)
@@ -138,7 +138,7 @@ func NewMultiPoint(coordinates Coordinates) *MultiPoint {
 	return &MultiPoint{Type: "MultiPoint", Coordinates: coordinates}
 }
 
-//Coordinates of LineString are an array of positions 
+//Coordinates of LineString are an array of positions
 // Out example:
 //    { "type": "LineString",
 //      "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
@@ -185,7 +185,7 @@ func NewLineString(coordinates Coordinates) *LineString {
 	return &LineString{Type: "LineString", Coordinates: coordinates}
 }
 
-// For type "MultiLineString", the "coordinates" member must be an array 
+// For type "MultiLineString", the "coordinates" member must be an array
 // of LineString coordinate arrays.
 // Out example:
 //	 { "type": "MultiLineString",
@@ -237,19 +237,19 @@ func NewMultiLineString(coordinates MultiLine) *MultiLineString {
 	return &MultiLineString{Type: "MultiLineString", Coordinates: coordinates}
 }
 
-// For type "Polygon", the "coordinates" member must be an array of LinearRing 
-// coordinate arrays. For Polygons with multiple rings, the first must be 
+// For type "Polygon", the "coordinates" member must be an array of LinearRing
+// coordinate arrays. For Polygons with multiple rings, the first must be
 // the exterior ring and any others must be interior rings or holes.
 // Out example:
 //{ "type": "Polygon",
 //  "coordinates": [
-//    				[ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], 
+//    				[ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
 //					[100.0, 1.0], [100.0, 0.0] ]
 //    ]
 // }
 type Polygon struct {
 	Type        string    `json:"type" bson:"type"`
-	Coordinates MultiLine `json:"coordinates,float" bson:"coordinates,float"`
+	Coordinates MultiLine `json:"coordinates,float" bson:"coordinates"`
 	Crs         *CRS      `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
@@ -290,7 +290,7 @@ func NewPolygon(coordinates MultiLine) *Polygon {
 	return &Polygon{Type: "Polygon", Coordinates: coordinates}
 }
 
-// For type "MultiPolygon", the "coordinates" member must 
+// For type "MultiPolygon", the "coordinates" member must
 // be an array of Polygon coordinate arrays.
 // Out example
 //{ "type": "MultiPolygon",
@@ -343,10 +343,10 @@ func NewMultiPolygon(coordinates []MultiLine) *MultiPolygon {
 	return &MultiPolygon{Type: "MultiPolygon", Coordinates: coordinates}
 }
 
-// A GeoJSON object with type "GeometryCollection" is a geometry object 
+// A GeoJSON object with type "GeometryCollection" is a geometry object
 // which represents a collection of geometry objects.
-// A geometry collection must have a member with the name 
-// "geometries". The value corresponding to "geometries" is an array. 
+// A geometry collection must have a member with the name
+// "geometries". The value corresponding to "geometries" is an array.
 // Each element in this array is a GeoJSON geometry object.
 // Out example:
 //{ "type": "GeometryCollection",
