@@ -5,12 +5,10 @@ Go package to easy and quick create datastructure which can be serialized to geo
 
 ***
 
-## INSTALATION
+## INSTALLATION
 
-
-`go get https://github.com/kpawlik/geojson`
-
-`go install https://github.com/kpawlik/geojson`
+    $ go get https://github.com/kpawlik/geojson
+    $ go install https://github.com/kpawlik/geojson
 
 ***
 
