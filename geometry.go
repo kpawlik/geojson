@@ -34,10 +34,12 @@ func Coord(obj interface{}) (ct CoordType) {
 	return
 }
 
-// Type to represent one coordinate (x,y).
+// Type to represent one coordinate (x,y). This coordinate can have any number of dimensions per the spec.
 // To simplify create new instance.
 // c := Coordinate{x, y}
-type Coordinate [2]CoordType
+// or
+// c := Coordinate{x, y, z}
+type Coordinate []CoordType
 
 // Slice of coordinates.
 // Simply creation:
