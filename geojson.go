@@ -1,5 +1,5 @@
 /*
-Package contains funcionality to simple and fast 
+Package contains funcionality to simple and fast
 create objects collection to serialize them as GeoJSON data.
 */
 package geojson
