@@ -135,6 +135,28 @@ func TestUnmarshalFeatureAndMultiLineString(t *testing.T) {
 	tt.AssertCoordinates(mls.Coordinates[0][1], Coordinate{2, 3}, "Coordinate test 2")
 }
 
+func TestUnmarshalFeatureAndGeometryCollection(t *testing.T) {
+	res := `{
+		"type":"Feature",
+		"geometry": {
+			"type":"GeometryCollection",
+			"geometries": [
+				{"type":"Point", "coordinates": [100,0]}
+			]
+		},
+		"properties":null
+	}`
+	f := Feature{}
+	err := json.Unmarshal([]byte(res), &f)
+	if err != nil {
+		t.Fatal("unmarshal failed")
+	}
+	_, err = f.GetGeometry()
+	if err != nil {
+		t.Fatal("GeoGeometry failed:", err)
+	}
+}
+
 func TestParseCoordinate(t *testing.T) {
 	var (
 		icoord interface{}
