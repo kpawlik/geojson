@@ -162,8 +162,8 @@ func TestParseCoordinates(t *testing.T) {
 	if coords, err := parseCoordinates(icoords); err != nil {
 		t.Error(err)
 	} else {
-		tt.AssertEq(coords[0], Coordinate{1, 0}, "Parse first coordinate error")
-		tt.AssertEq(coords[1], Coordinate{1.1, 2}, "Parse second coordinate error")
+		tt.AssertCoordinates(coords[0], Coordinate{1, 0}, "Parse first coordinate error")
+		tt.AssertCoordinates(coords[1], Coordinate{1.1, 2}, "Parse second coordinate error")
 	}
 	_, err = parseCoordinates([][]interface{}{{"1", 1}, {"asd", 0}})
 	tt.AssertNeq(err, nil, "Error expected")
@@ -180,8 +180,8 @@ func TestParseMultiline(t *testing.T) {
 	if ml, err := parseMultiLine(icoords); err != nil {
 		t.Error(err)
 	} else {
-		tt.AssertEq(ml[0][0], Coordinate{1, 1}, "Parse first coordinate error")
-		tt.AssertEq(ml[1][1], Coordinate{4, 4}, "Parse last coordinate error")
+		tt.AssertCoordinates(ml[0][0], Coordinate{1, 1}, "Parse first coordinate error")
+		tt.AssertCoordinates(ml[1][1], Coordinate{4, 4}, "Parse last coordinate error")
 	}
 	_, err = parseCoordinates([]interface{}{1, 2})
 	tt.AssertNeq(err, nil, "Error expected")
