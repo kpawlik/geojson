@@ -141,7 +141,8 @@ func TestUnmarshalFeatureAndGeometryCollection(t *testing.T) {
 		"geometry": {
 			"type":"GeometryCollection",
 			"geometries": [
-				{"type":"Point", "coordinates": [100,0]}
+				{"type":"Point", "coordinates": [100,0]},
+				{"type":"Point", "coordinates": [0,100]}
 			]
 		},
 		"properties":null
@@ -151,9 +152,16 @@ func TestUnmarshalFeatureAndGeometryCollection(t *testing.T) {
 	if err != nil {
 		t.Fatal("unmarshal failed")
 	}
-	_, err = f.GetGeometry()
+	g, err := f.GetGeometry()
 	if err != nil {
 		t.Fatal("GeoGeometry failed:", err)
+	}
+	gc, ok := g.(*GeometryCollection)
+	if !ok {
+		t.Fatal("expected GeometryCollection")
+	}
+	if len(gc.Geometries) != 2 {
+		t.Fatalf("expected 2 geometries in collection, got %d", len(gc.Geometries))
 	}
 }
 
