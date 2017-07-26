@@ -135,6 +135,36 @@ func TestUnmarshalFeatureAndMultiLineString(t *testing.T) {
 	tt.AssertCoordinates(mls.Coordinates[0][1], Coordinate{2, 3}, "Coordinate test 2")
 }
 
+func TestUnmarshalFeatureAndGeometryCollection(t *testing.T) {
+	res := `{
+		"type":"Feature",
+		"geometry": {
+			"type":"GeometryCollection",
+			"geometries": [
+				{"type":"Point", "coordinates": [100,0]},
+				{"type":"Point", "coordinates": [0,100]}
+			]
+		},
+		"properties":null
+	}`
+	f := Feature{}
+	err := json.Unmarshal([]byte(res), &f)
+	if err != nil {
+		t.Fatal("unmarshal failed")
+	}
+	g, err := f.GetGeometry()
+	if err != nil {
+		t.Fatal("GeoGeometry failed:", err)
+	}
+	gc, ok := g.(*GeometryCollection)
+	if !ok {
+		t.Fatal("expected GeometryCollection")
+	}
+	if len(gc.Geometries) != 2 {
+		t.Fatalf("expected 2 geometries in collection, got %d", len(gc.Geometries))
+	}
+}
+
 func TestParseCoordinate(t *testing.T) {
 	var (
 		icoord interface{}
@@ -162,8 +192,8 @@ func TestParseCoordinates(t *testing.T) {
 	if coords, err := parseCoordinates(icoords); err != nil {
 		t.Error(err)
 	} else {
-		tt.AssertEq(coords[0], Coordinate{1, 0}, "Parse first coordinate error")
-		tt.AssertEq(coords[1], Coordinate{1.1, 2}, "Parse second coordinate error")
+		tt.AssertCoordinates(coords[0], Coordinate{1, 0}, "Parse first coordinate error")
+		tt.AssertCoordinates(coords[1], Coordinate{1.1, 2}, "Parse second coordinate error")
 	}
 	_, err = parseCoordinates([][]interface{}{{"1", 1}, {"asd", 0}})
 	tt.AssertNeq(err, nil, "Error expected")
@@ -180,8 +210,8 @@ func TestParseMultiline(t *testing.T) {
 	if ml, err := parseMultiLine(icoords); err != nil {
 		t.Error(err)
 	} else {
-		tt.AssertEq(ml[0][0], Coordinate{1, 1}, "Parse first coordinate error")
-		tt.AssertEq(ml[1][1], Coordinate{4, 4}, "Parse last coordinate error")
+		tt.AssertCoordinates(ml[0][0], Coordinate{1, 1}, "Parse first coordinate error")
+		tt.AssertCoordinates(ml[1][1], Coordinate{4, 4}, "Parse last coordinate error")
 	}
 	_, err = parseCoordinates([]interface{}{1, 2})
 	tt.AssertNeq(err, nil, "Error expected")
