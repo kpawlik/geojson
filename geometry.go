@@ -34,27 +34,28 @@ func Coord(obj interface{}) (ct CoordType) {
 	return
 }
 
-// Type to represent one coordinate (x,y). This coordinate can have any number of dimensions per the spec.
+// Coordinate is a type to represent one coordinate (x,y). This coordinate can have any number of dimensions per the spec.
 // To simplify create new instance.
 // c := Coordinate{x, y}
 // or
 // c := Coordinate{x, y, z}
 type Coordinate []CoordType
 
-// Slice of coordinates.
+// Coordinates is a lice of coordinates.
 // Simply creation:
 // c := Coordinates{{1, 2}, {2,2}}
 // or
 // c := Coordinates{Coordinate{1, 2}, Coordinate{2,2}}
 type Coordinates []Coordinate
 
-// Representation of set of lines
+// MultiLine represents of set of lines
 type MultiLine []Coordinates
 
+// Geometry interface for types which represent geometries
 type Geometry interface {
 	GetType() string
 	AddGeometry(interface{}) error
-	//GetGeometry() interface{}
+	GetCoordinates() interface{}
 }
 
 //Point coordinates are in x, y order
@@ -68,23 +69,24 @@ type Point struct {
 	Crs         *CRS       `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
-// Add geometry to coordinates.
+// AddGeometry adds geometry to coordinates.
 // New value will replace existing
 func (t *Point) AddGeometry(g interface{}) error {
 	if c, ok := g.(Coordinate); ok {
 		t.Coordinates = c
 	} else {
-		return errors.New(fmt.Sprintf("AssertionError: %v to %v",
-			g, "Coordinate"))
+		return fmt.Errorf("AssertionError: %v to %v", g, "Coordinate")
 	}
 	return nil
 }
 
+// GetType return type of geometry
 func (t Point) GetType() string {
 	return t.Type
 }
 
-func (t Point) GetGeometry() interface{} {
+//GetCoordinates return coordinates of geometry
+func (t Point) GetCoordinates() interface{} {
 	return t.Coordinates
 }
 
@@ -128,7 +130,8 @@ func (t MultiPoint) GetType() string {
 	return t.Type
 }
 
-func (t MultiPoint) GetGeometry() interface{} {
+//GetCoordinates return coordinates of geometry
+func (t MultiPoint) GetCoordinates() interface{} {
 	return t.Coordinates
 }
 
@@ -175,7 +178,8 @@ func (t LineString) GetType() string {
 	return t.Type
 }
 
-func (t LineString) GetGeometry() interface{} {
+//GetCoordinates return coordinates of geometry
+func (t LineString) GetCoordinates() interface{} {
 	return t.Coordinates
 }
 
@@ -227,7 +231,8 @@ func (t MultiLineString) GetType() string {
 	return t.Type
 }
 
-func (t MultiLineString) GetGeometry() interface{} {
+//GetCoordinates return coordinates of geometry
+func (t MultiLineString) GetCoordinates() interface{} {
 	return t.Coordinates
 }
 
@@ -276,11 +281,13 @@ func (t *Polygon) AddCoordinates(coordinates ...Coordinates) {
 	t.Coordinates = append(t.Coordinates, coordinates...)
 }
 
+// GetType return type of geometry
 func (t Polygon) GetType() string {
 	return t.Type
 }
 
-func (t Polygon) GetGeometry() interface{} {
+//GetCoordinates return coordinates of geometry
+func (t Polygon) GetCoordinates() interface{} {
 	return t.Coordinates
 }
 
@@ -314,7 +321,7 @@ func (t *MultiPolygon) AddCoordinates(lines ...MultiLine) {
 	t.Coordinates = append(t.Coordinates, lines...)
 }
 
-// Add new polygon  or hole to Polygon
+// AddGeometry add new polygon  or hole to Polygon
 func (t *MultiPolygon) AddGeometry(g interface{}) error {
 	switch c := g.(type) {
 	case []MultiLine:
@@ -329,11 +336,13 @@ func (t *MultiPolygon) AddGeometry(g interface{}) error {
 	return nil
 }
 
+// GetType return type of geometry
 func (t MultiPolygon) GetType() string {
 	return t.Type
 }
 
-func (t MultiPolygon) GetGeometry() interface{} {
+//GetCoordinates return coordinates of geometry return object geometry
+func (t MultiPolygon) GetCoordinates() interface{} {
 	return t.Coordinates
 }
 
@@ -345,7 +354,7 @@ func NewMultiPolygon(coordinates []MultiLine) *MultiPolygon {
 	return &MultiPolygon{Type: "MultiPolygon", Coordinates: coordinates}
 }
 
-// A GeoJSON object with type "GeometryCollection" is a geometry object
+// GeometryCollection is a GeoJSON object with type "GeometryCollection" is a geometry object
 // which represents a collection of geometry objects.
 // A geometry collection must have a member with the name
 // "geometries". The value corresponding to "geometries" is an array.
@@ -367,12 +376,12 @@ type GeometryCollection struct {
 	Crs        *CRS          `json:"crs,omitempty" bson:"crs,omitempty"`
 }
 
-// new values are append
+// AddGeometries appends new values to Geometries
 func (t *GeometryCollection) AddGeometries(g ...interface{}) {
 	t.Geometries = append(t.Geometries, g...)
 }
 
-// Add new geometry  or hole to GeometryCollection
+// AddGeometry add new geometry  or hole to GeometryCollection
 func (t *GeometryCollection) AddGeometry(g interface{}) error {
 	switch c := g.(type) {
 	case []interface{}:
@@ -387,8 +396,14 @@ func (t *GeometryCollection) AddGeometry(g interface{}) error {
 	return nil
 }
 
+// GetType return type of geometry
 func (t GeometryCollection) GetType() string {
 	return t.Type
+}
+
+//GetCoordinates return coordinates of geometry
+func (t GeometryCollection) GetCoordinates() interface{} {
+	return t.Geometries
 }
 
 // factory function
