@@ -27,7 +27,7 @@ type Feature struct {
 
 func (t *Feature) GetGeometry() (Geometry, error) {
 	gi := t.Geometry
-	return parseGeometry(gi)
+	return ParseGeometry(gi)
 }
 
 // Factory constructor method
@@ -211,7 +211,8 @@ func parseMultiPolygon(obj interface{}) (mpol *MultiPolygon, err error) {
 	return
 }
 
-func parseGeometry(gi interface{}) (geom Geometry, err error) {
+// ParseGeometry parse and returns Geometry from generic interface
+func ParseGeometry(gi interface{}) (geom Geometry, err error) {
 	switch g := gi.(type) {
 	case map[string]interface{}:
 		coord := g["coordinates"]
